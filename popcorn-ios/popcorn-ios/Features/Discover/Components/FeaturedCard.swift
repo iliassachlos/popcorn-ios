@@ -12,11 +12,12 @@ struct FeaturedCard: View {
         .frame(height: 220)
         .frame(maxWidth: .infinity)
         .clipShape(.rect(cornerRadius: Radius.lg))
+        .padding(.horizontal, Spacing.md)
     }
 }
 
 extension FeaturedCard {
-    static var placeholder: some View {
+    static var skeleton: some View {
         RoundedRectangle(cornerRadius: Radius.lg)
             .fill(.surfaceMuted)
             .frame(height: 220)
@@ -50,8 +51,15 @@ private extension FeaturedCard {
             Text("Featured")
                 .font(.caption)
                 .textCase(.uppercase)
-                .foregroundStyle(.white.opacity(0.6))
+                .foregroundStyle(.white.opacity(0.8))
+                .padding(.horizontal, 10)
+                .padding(.vertical, 5)
+                .background(.white.opacity(0.2))
+                .clipShape(.capsule)
                 .kerning(1.5)
+                
+                
+            Spacer()
             
             Text(movie.title)
                 .font(.title)

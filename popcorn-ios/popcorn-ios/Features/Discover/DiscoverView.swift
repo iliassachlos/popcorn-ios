@@ -7,7 +7,9 @@ struct DiscoverView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: Spacing.xl) {
-                   featuredSection
+                    featuredSection
+                    carouselSection(title: "Trending", state: viewModel.trending)
+                    carouselSection(title: "New Releases", state: viewModel.nowPlaying)
                 }
                 .padding(.bottom, Spacing.xs)
                 
@@ -25,12 +27,48 @@ private extension DiscoverView {
     var featuredSection: some View {
         switch viewModel.trending {
         case .idle, .loading:
-            FeaturedCard.placeholder
+            FeaturedCard.skeleton
+
         case .loaded(let movies):
             if let featured = movies.first {
                 FeaturedCard(movie: featured)
-                    .padding(.horizontal, Spacing.md)
             }
+        case .failed:
+            EmptyView()
+        }
+    }
+    
+    @ViewBuilder
+    var trendingSection: some View {
+        switch viewModel.trending {
+        case .idle, .loading:
+            MovieCarousel.skeleton(title: "Trending")
+            
+        case .loaded(let movies):
+            if !movies.isEmpty {
+                MovieCarousel(title: "Trendings", movies: movies, onSeeAll: {})
+            } else {
+                EmptyView()
+            }
+            
+        case .failed:
+            EmptyView()
+        }
+    }
+    
+    @ViewBuilder
+    func carouselSection(title: String, state: Loadable<[Movie]>) -> some View {
+        switch state {
+        case .idle, .loading:
+            MovieCarousel.skeleton(title: title)
+            
+        case .loaded(let movies):
+            if !movies.isEmpty {
+                MovieCarousel(title: title, movies: movies, onSeeAll: {})
+            } else {
+                EmptyView()
+            }
+            
         case .failed:
             EmptyView()
         }
