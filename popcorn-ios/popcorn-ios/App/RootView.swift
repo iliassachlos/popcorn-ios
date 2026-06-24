@@ -13,14 +13,15 @@ struct RootView: View {
                         systemImage: selectedTab == 0 ? "film.fill" : "film"
                     )
                 }
-            WatchlistView()
-                .tabItem {
-                    Label("Watchlist", systemImage: "bookmark")
-                }
             SearchView()
                 .tabItem {
                     Label("Search", systemImage: "magnifyingglass")
                 }
+            WatchlistView()
+                .tabItem {
+                    Label("Watchlist", systemImage: "bookmark")
+                }
+           
             ProfileView()
                 .tabItem {
                     Label("Profile", systemImage: "person")

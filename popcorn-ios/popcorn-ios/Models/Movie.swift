@@ -7,6 +7,7 @@ struct Movie: Decodable, Identifiable {
     let posterPath: String?
     let backdropPath: String?
     let voteAverage: Double
+    let voteCount: Int
     let releaseDate: String?
     let genreIds: [Int]?
     
@@ -21,6 +22,10 @@ struct Movie: Decodable, Identifiable {
         
         return URL(string: "https://image.tmdb.org/t/p/w1280\(backdropPath)")
     }
+    
+    var tmdbURL: URL? {
+        URL(string: "https://www.themoviedb.org/movie/\(id)")
+    }
 }
 
 extension Movie {
@@ -31,6 +36,7 @@ extension Movie {
         posterPath: "/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg",
         backdropPath: "/xOMo8BRK7PfcJv9JCnx7s5hj0PX.jpg",
         voteAverage: 8.3,
+        voteCount: 594,
         releaseDate: "2024-03-01",
         genreIds: [878, 12]
     )

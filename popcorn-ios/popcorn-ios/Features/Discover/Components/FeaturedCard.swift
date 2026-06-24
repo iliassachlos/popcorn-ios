@@ -3,6 +3,10 @@ import SwiftUI
 struct FeaturedCard: View {
     let movie: Movie
     
+    @State private var viewModel = MovieDetailViewModel()
+    
+    @Environment(\.openURL) private var openUrl
+    
     var body: some View {
         ZStack(alignment: .bottomLeading) {
             backdropImage
@@ -13,6 +17,9 @@ struct FeaturedCard: View {
         .frame(maxWidth: .infinity)
         .clipShape(.rect(cornerRadius: Radius.lg))
         .padding(.horizontal, Spacing.md)
+        .task {
+            await viewModel.loadMovie(id: movie.id)
+        }
     }
 }
 
@@ -26,7 +33,6 @@ extension FeaturedCard {
 }
 
 private extension FeaturedCard {
-    
     var backdropImage: some View {
         AsyncImage(url: movie.backdropURL) { image in
             image
@@ -49,21 +55,20 @@ private extension FeaturedCard {
     var movieInfo: some View {
         VStack(alignment: .leading, spacing: Spacing.xs) {
             Text("Featured")
-                .font(.caption)
+                .font(Font.caption)
+                .foregroundStyle(Color.white)
                 .textCase(.uppercase)
-                .foregroundStyle(.white.opacity(0.8))
                 .padding(.horizontal, 10)
                 .padding(.vertical, 5)
-                .background(.white.opacity(0.2))
                 .clipShape(.capsule)
+                .glassEffect()
                 .kerning(1.5)
-                
                 
             Spacer()
             
             Text(movie.title)
-                .font(.title)
-                .foregroundStyle(.white)
+                .font(Font.title)
+                .foregroundStyle(Color.white)
                 .lineLimit(2)
             
             metadataRow
@@ -75,42 +80,50 @@ private extension FeaturedCard {
     }
     
     var metadataRow: some View {
-        HStack(spacing: Spacing.sm) {
-            HStack(spacing: 4) {
-                Image(systemName: "star.fill")
-                    .font(.caption)
-                    .foregroundStyle(.warning)
-                Text(String(format: "%.1f", movie.voteAverage))
-                    .font(.caption)
-                    .foregroundStyle(.white)
-            }
+        let detailedMovie = viewModel.movie.value
+        
+        return HStack(spacing: Spacing.sm) {
+            Text(detailedMovie?.genreNames ?? "")
+                .font(Font.caption)
+                .foregroundStyle(Color.white)
             
+            Text("·")
+                .foregroundStyle(Color.white)
+                        
             if let year = movie.releaseDate?.prefix(4) {
                 Text("·")
-                    .foregroundStyle(.white.opacity(0.4))
+                    .foregroundStyle(Color.white)
                 Text(String(year))
-                    .font(.caption)
-                    .foregroundStyle(.white.opacity(0.7))
+                    .font(Font.caption)
+                    .foregroundStyle(Color.white)
+            }
+            
+            HStack(spacing: 4) {
+                Image(systemName: "star.fill")
+                    .font(Font.caption)
+                    .foregroundStyle(Color.warning)
+                Text(String(format: "%.1f", movie.voteAverage))
+                    .font(Font.caption)
+                    .foregroundStyle(Color.white)
             }
         }
     }
     
     var trailerButton: some View {
         Button {
-            // wire up later
+            if let url = viewModel.movie.value?.trailerURL {
+                openUrl(url)
+            }
         } label: {
-            HStack(spacing: Spacing.xs) {
+            HStack(spacing: Spacing.sm) {
                 Image(systemName: "play.fill")
-                    .font(.caption)
                 Text("Trailer")
             }
-            .font(.subheadline)
-            .foregroundStyle(.white)
-            .padding(.horizontal, Spacing.md)
-            .padding(.vertical, Spacing.sm)
-            .background(.primary)
-            .clipShape(.rect(cornerRadius: Radius.full))
         }
+        .buttonStyle(.glassProminent)
+        .controlSize(.regular)
+        .tint(.secondary)
+        .disabled(viewModel.movie.value?.trailerURL == nil)
     }
 }
 

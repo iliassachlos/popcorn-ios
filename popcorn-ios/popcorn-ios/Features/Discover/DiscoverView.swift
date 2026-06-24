@@ -8,15 +8,21 @@ struct DiscoverView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: Spacing.xl) {
                     featuredSection
-                    carouselSection(title: "Trending", state: viewModel.trending)
-                    carouselSection(title: "New Releases", state: viewModel.nowPlaying)
+                    carouselSection(
+                        title: "Trending",
+                        state: viewModel.trending
+                    )
+                    carouselSection(
+                        title: "New Releases",
+                        state: viewModel.nowPlaying
+                    )
                 }
                 .padding(.bottom, Spacing.xs)
                 
             }
             .navigationTitle("Discover")
         }
-        .task {
+        .task {	
             await viewModel.loadAll()
         }
     }
@@ -31,7 +37,12 @@ private extension DiscoverView {
 
         case .loaded(let movies):
             if let featured = movies.first {
-                FeaturedCard(movie: featured)
+                NavigationLink {
+                    MovieDetailView(movie: featured)
+                } label: {
+                    FeaturedCard(movie: featured)
+                }
+                
             }
         case .failed:
             EmptyView()

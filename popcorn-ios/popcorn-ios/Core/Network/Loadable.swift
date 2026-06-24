@@ -4,3 +4,10 @@ enum Loadable<T> {
     case loaded(T)
     case failed(Error)
 }
+
+extension Loadable {
+    var value: T? {
+        if case .loaded(let v) = self { return v}
+        return nil
+    }
+}

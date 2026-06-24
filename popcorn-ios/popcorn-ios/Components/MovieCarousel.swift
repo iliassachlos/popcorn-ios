@@ -6,7 +6,9 @@ struct MovieCarousel: View {
     let onSeeAll: () -> Void
     
     var body: some View {
-        VStack(alignment: .leading, spacing: Spacing.sm) {
+        let _ = print("🎠 carousel \(title) rendering \(movies.count) movies, unique ids: \(Set(movies.map(\.id)).count)")
+        
+        return VStack(alignment: .leading, spacing: Spacing.sm) {
             HStack {
                 Text(title)
                     .font(Font.title)
