@@ -8,7 +8,7 @@ struct PosterCard: View {
         VStack(alignment: .leading, spacing: Spacing.xs) {
             poster
             title
-            rating
+            MovieRating(rating: movie.voteAverage)
         }
         .frame(width: 130)
     }
@@ -54,18 +54,6 @@ private extension PosterCard {
             .font(Font.subheadline)
             .foregroundStyle(Color.primary)
             .lineLimit(1)
-    }
-    
-    var rating: some View {
-        HStack{
-            Image(systemName: "star.fill")
-                .font(.caption)
-                .foregroundStyle(.warning)
-            
-            Text(String(format: "%.1f", movie.voteAverage))
-                .font(.caption)
-                .foregroundStyle(.textMuted)
-        }
     }
 }
 

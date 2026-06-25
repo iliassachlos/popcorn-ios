@@ -98,14 +98,7 @@ private extension FeaturedCard {
                     .foregroundStyle(Color.white)
             }
             
-            HStack(spacing: 4) {
-                Image(systemName: "star.fill")
-                    .font(Font.caption)
-                    .foregroundStyle(Color.warning)
-                Text(String(format: "%.1f", movie.voteAverage))
-                    .font(Font.caption)
-                    .foregroundStyle(Color.white)
-            }
+            MovieRating(rating: movie.voteAverage)
         }
     }
     

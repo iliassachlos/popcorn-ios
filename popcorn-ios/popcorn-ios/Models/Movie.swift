@@ -26,6 +26,11 @@ struct Movie: Decodable, Identifiable {
     var tmdbURL: URL? {
         URL(string: "https://www.themoviedb.org/movie/\(id)")
     }
+    
+    var releaseYear: String? {
+        guard let releaseDate, releaseDate.count >= 4 else { return nil }
+        return String(releaseDate.prefix(4))
+    }
 }
 
 extension Movie {

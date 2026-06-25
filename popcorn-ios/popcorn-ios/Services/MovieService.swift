@@ -5,8 +5,7 @@ struct MovieService {
         let response: PagedResponse<Movie> = try await APIClient.fetch(
             Endpoint(path: "/trending/movie/week", queryItems: [])
         )
-        
-        print("🎬 service got \(response.results.count) movies, unique ids: \(Set(response.results.map(\.id)).count)")
+
 
         return response.results
     }
@@ -27,6 +26,22 @@ struct MovieService {
                     name: "append_to_response",
                     value: "videos"
                 )]
+            )
+        )
+        
+        return response
+    }
+    
+    func fetchSearch(searchTerm: String, page: Int) async throws -> PagedResponse<Movie> {
+        print("Fetching for page: \(page)")
+        
+        let response: PagedResponse<Movie> = try await APIClient.fetch(
+            Endpoint(
+                path: "/search/movie",
+                queryItems: [
+                    URLQueryItem(name: "query", value: searchTerm),
+                    URLQueryItem(name: "page", value: "\(page)")
+                ]
             )
         )
         

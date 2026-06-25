@@ -96,17 +96,10 @@ private extension MovieDetailView {
             
         return VStack(alignment: .leading, spacing: Spacing.lg) {
             HStack {
-                Image(systemName: "star.fill")
-                    .imageScale(.small)
-                    .foregroundStyle(Color.warning)
-                
                 if let voteAverage = detailedMovie?.voteAverage {
-                    Text(String(format: "%.1f", voteAverage))
-                        .font(Font.body)
-                        .fontWeight(.bold)
+                    MovieRating(rating: voteAverage)
                 }
-               
-                
+
                 if let voteCount = detailedMovie?.voteCount {
                     Text("·")
                         .foregroundStyle(.textMuted)
