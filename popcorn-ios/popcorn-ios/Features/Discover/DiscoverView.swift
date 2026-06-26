@@ -10,7 +10,7 @@ struct DiscoverView: View {
                     featuredSection
                     carouselSection(
                         feed: .trending,
-                        state: viewModel.trending
+                        state: viewModel.trending.map { Array($0.dropFirst()) }
                     )
                     carouselSection(
                         feed: .nowPlaying,

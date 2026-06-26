@@ -1,10 +1,3 @@
-//
-//  popcorn_iosApp.swift
-//  popcorn-ios
-//
-//  Created by admin on 17/6/26.
-//
-
 import SwiftUI
 import SwiftData
 
@@ -14,5 +7,6 @@ struct popcorn_iosApp: App {
         WindowGroup {
             RootView()
         }
+        .modelContainer(.appContainer)
     }
 }

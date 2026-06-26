@@ -28,5 +28,5 @@ struct RootView: View {
 }
 
 #Preview {
-    RootView()
+    RootView().modelContainer(for: SavedMovie.self, inMemory: true)
 }

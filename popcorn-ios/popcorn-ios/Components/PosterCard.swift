@@ -2,9 +2,14 @@
 import SwiftUI
 
 struct PosterCard: View {
+    static let defaultWidth: CGFloat = 120
+    static let defaultHeight: CGFloat = 180
+
     let movie: Movie
-    var width: CGFloat = 120
-    var height: CGFloat = 180
+    var width: CGFloat = defaultWidth
+    var height: CGFloat = defaultHeight
+    
+
     
     var body: some View {
         VStack(alignment: .leading, spacing: Spacing.xs) {
@@ -21,7 +26,7 @@ extension PosterCard {
         VStack(alignment: .leading, spacing: Spacing.xs) {
             RoundedRectangle(cornerRadius: Radius.md)
                 .fill(.surfaceMuted)
-                .frame(width: width, height: height)
+                .frame(width: defaultWidth, height: defaultHeight)
             
             RoundedRectangle(cornerRadius: 4)
                 .fill(.surfaceMuted)

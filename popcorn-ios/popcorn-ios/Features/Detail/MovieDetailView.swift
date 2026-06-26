@@ -1,11 +1,27 @@
 import SwiftUI
+import SwiftData
 
 struct MovieDetailView: View {
     let movie: Movie
     
     @State private var viewModel = MovieDetailViewModel()
     
+    @Query private var savedMovies: [SavedMovie]
+    
     @Environment(\.openURL) private var openTrailerUrl
+    @Environment(\.modelContext) private var modelContext
+    
+    init(movie: Movie) {
+        self.movie = movie
+        
+        let id = movie.id
+        
+        _savedMovies = Query(filter: #Predicate<SavedMovie> { $0.id == id})
+    }
+    
+    private var isSaved: Bool {
+        !savedMovies.isEmpty
+    }
     
     var body: some View {
         ScrollView {
@@ -146,9 +162,9 @@ private extension MovieDetailView {
                 }
                 
                 Button {
-                    // Save action
+                    viewModel.toggleSave(existing: savedMovies.first, context: modelContext)
                 } label: {
-                    Image(systemName: "bookmark")
+                    Image(systemName: isSaved ? "bookmark.fill" : "bookmark")
                 }
             }
             .padding(.horizontal, Spacing.sm)

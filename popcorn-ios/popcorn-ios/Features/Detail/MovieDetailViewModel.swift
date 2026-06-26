@@ -1,4 +1,5 @@
 import Foundation
+import SwiftData
 
 @Observable
 class MovieDetailViewModel {
@@ -16,5 +17,28 @@ class MovieDetailViewModel {
         } catch {
             movie = .failed(error)
         }
+    }
+    
+    func toggleSave(existing: SavedMovie?, context: ModelContext) {
+        if let existing {
+            context.delete(existing)
+            return
+        }
+        
+        guard let detail = movie.value else { return }
+        
+        let savedMovie = SavedMovie(
+            id: detail.id,
+            title: detail.title,
+            overview: detail.overview,
+            posterPath: detail.posterPath,
+            backdropPath: detail.backdropPath,
+            voteAverage: detail.voteAverage,
+            mainGenre: detail.genres.first?.name,
+            releaseDate: detail.releaseDate
+        )
+        
+        context.insert(savedMovie)
+        
     }
 }
