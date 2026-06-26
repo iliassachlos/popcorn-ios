@@ -3,19 +3,24 @@ import SwiftUI
 struct MovieCarousel: View {
     let title: String
     let movies: [Movie]
-    let onSeeAll: () -> Void
+    let feed: MoviesFeed
     
     var body: some View {
         return VStack(alignment: .leading, spacing: Spacing.sm) {
             HStack {
                 Text(title)
-                    .font(Font.title)
-                
+                    .font(Font.title2)
+                    .fontWeight(.semibold)
+                    
                 Spacer()
                 
-                Button("See All", action: onSeeAll)
-                    .font(Font.subheadline)
-                    .foregroundStyle(Color.accent)
+                NavigationLink {
+                    MoviesGridView(feed: feed)
+                } label :{
+                    Text("See All")
+                        .font(Font.subheadline)
+                        .foregroundStyle(Color.accent)
+                }
             }
             .padding(.horizontal, Spacing.md)
             
@@ -27,6 +32,7 @@ struct MovieCarousel: View {
                         } label: {
                         PosterCard(movie: movie)
                         }
+                        .buttonStyle(.plain)
                     }
                 }
                 .padding(.leading, Spacing.md)
@@ -60,6 +66,6 @@ extension MovieCarousel {
     MovieCarousel(
         title: "Trending",
         movies: [.preview, .preview, .preview],
-        onSeeAll: {}
+        feed: .trending
     )
 }

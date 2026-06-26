@@ -17,9 +17,9 @@ class DiscoverViewModel {
         trending = .loading
         
         do{
-            let results = try await service.fetchTrending()
+            let results = try await service.fetchTrending(page: 1)
             
-            trending = .loaded(results)
+            trending = .loaded(results.results)
         } catch {
             trending = .failed(error)
         }
@@ -29,9 +29,9 @@ class DiscoverViewModel {
         nowPlaying = .loading
         
         do {
-            let results = try await service.fetchNowPlaying()
+            let results = try await service.fetchNowPlaying(page: 1)
             
-            nowPlaying = .loaded(results)
+            nowPlaying = .loaded(results.results)
         }catch {
             nowPlaying = .failed(error)
         }

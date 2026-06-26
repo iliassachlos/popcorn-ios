@@ -1,21 +1,24 @@
 import Foundation
 
 struct MovieService {
-    func fetchTrending() async throws -> [Movie] {
+    func fetchTrending(page: Int) async throws -> PagedResponse<Movie> {
         let response: PagedResponse<Movie> = try await APIClient.fetch(
-            Endpoint(path: "/trending/movie/week", queryItems: [])
+            Endpoint(path: "/trending/movie/week", queryItems: [
+                URLQueryItem(name: "page", value:"\(page)")
+            ])
         )
 
-
-        return response.results
+        return response
     }
 
-    func fetchNowPlaying() async throws -> [Movie] {
+    func fetchNowPlaying(page: Int) async throws -> PagedResponse<Movie>  {
         let response: PagedResponse<Movie> = try await APIClient.fetch(
-            Endpoint(path: "/movie/now_playing", queryItems: [])
+            Endpoint(path: "/movie/now_playing", queryItems: [
+                URLQueryItem(name: "page", value:"\(page)")
+            ])
         )
 
-        return response.results
+        return response
     }
 
     func fetchDetail(id: Int) async throws -> MovieDetail {
@@ -33,8 +36,6 @@ struct MovieService {
     }
     
     func fetchSearch(searchTerm: String, page: Int) async throws -> PagedResponse<Movie> {
-        print("Fetching for page: \(page)")
-        
         let response: PagedResponse<Movie> = try await APIClient.fetch(
             Endpoint(
                 path: "/search/movie",

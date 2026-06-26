@@ -97,7 +97,7 @@ private extension MovieDetailView {
         return VStack(alignment: .leading, spacing: Spacing.lg) {
             HStack {
                 if let voteAverage = detailedMovie?.voteAverage {
-                    MovieRating(rating: voteAverage)
+                    MovieRating(rating: voteAverage, style: .bold)
                 }
 
                 if let voteCount = detailedMovie?.voteCount {

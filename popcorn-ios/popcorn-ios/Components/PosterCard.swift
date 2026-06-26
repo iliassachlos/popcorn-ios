@@ -3,6 +3,8 @@ import SwiftUI
 
 struct PosterCard: View {
     let movie: Movie
+    var width: CGFloat = 120
+    var height: CGFloat = 180
     
     var body: some View {
         VStack(alignment: .leading, spacing: Spacing.xs) {
@@ -19,7 +21,7 @@ extension PosterCard {
         VStack(alignment: .leading, spacing: Spacing.xs) {
             RoundedRectangle(cornerRadius: Radius.md)
                 .fill(.surfaceMuted)
-                .frame(width: 120, height: 180)
+                .frame(width: width, height: height)
             
             RoundedRectangle(cornerRadius: 4)
                 .fill(.surfaceMuted)
@@ -45,13 +47,13 @@ private extension PosterCard {
                         .foregroundStyle(.textMuted)
                 }
         }
-        .frame(width: 120, height: 180)
+        .frame(width: width, height: height)
         .clipShape(.rect(cornerRadius: Radius.sm))
     }
     
     var title: some View {
         Text(movie.title)
-            .font(Font.subheadline)
+            .font(Font.headline)
             .foregroundStyle(Color.primary)
             .lineLimit(1)
     }

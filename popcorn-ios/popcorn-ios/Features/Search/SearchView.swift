@@ -36,10 +36,17 @@ private extension SearchView {
                             NavigationLink {
                                 MovieDetailView(movie: movie)
                             } label : {
-                                MovieRow(movie: movie)
-                                    .padding(.horizontal)
-                                    .padding(.vertical, Spacing.sm)
+                                VStack{
+                                    MovieRow(movie: movie)
+                                        .padding(.horizontal)
+                                        .padding(.vertical, Spacing.sm)
+                                
+                                    Divider()
+                                        .padding(.horizontal, Spacing.md)
+                                        .frame(maxWidth: .infinity)
+                                }
                             }
+                            .buttonStyle(.plain)
                             .task {
                                 if movie.id == movies.last?.id {
                                     await viewModel.loadMore()
@@ -55,31 +62,6 @@ private extension SearchView {
                     }
 
                 }
-//                List {
-//                    Section {
-//                        ForEach(movies) { movie in
-//                            NavigationLink {
-//                                MovieDetailView(movie: movie)
-//                            } label: {
-//                                MovieRow(movie: movie)
-//                            }
-//                            .task {
-//                                if movie.id == movies.last?.id {
-//                                    await viewModel.loadMore()
-//                                }
-//                            }
-//                        }
-//                        
-//                        if viewModel.isLoadingMore {
-//                            ProgressView()
-//                                .frame(maxWidth: .infinity)
-//                                .listRowSeparator(.hidden)
-//                        }
-//                    }
-//                }
-//                .listStyle(.insetGrouped)
-//                .scrollContentBackground(.hidden)
-//                .background(.clear)
             }
         case .failed:
             ContentUnavailableView(

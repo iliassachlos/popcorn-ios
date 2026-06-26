@@ -9,11 +9,11 @@ struct DiscoverView: View {
                 VStack(alignment: .leading, spacing: Spacing.xl) {
                     featuredSection
                     carouselSection(
-                        title: "Trending",
+                        feed: .trending,
                         state: viewModel.trending
                     )
                     carouselSection(
-                        title: "New Releases",
+                        feed: .nowPlaying,
                         state: viewModel.nowPlaying
                     )
                 }
@@ -21,6 +21,9 @@ struct DiscoverView: View {
                 
             }
             .navigationTitle("Discover")
+            .refreshable {
+                await viewModel.loadAll()
+            }
         }
         .task {	
             await viewModel.loadAll()
@@ -42,7 +45,6 @@ private extension DiscoverView {
                 } label: {
                     FeaturedCard(movie: featured)
                 }
-                
             }
         case .failed:
             EmptyView()
@@ -50,32 +52,14 @@ private extension DiscoverView {
     }
     
     @ViewBuilder
-    var trendingSection: some View {
-        switch viewModel.trending {
-        case .idle, .loading:
-            MovieCarousel.skeleton(title: "Trending")
-            
-        case .loaded(let movies):
-            if !movies.isEmpty {
-                MovieCarousel(title: "Trendings", movies: movies, onSeeAll: {})
-            } else {
-                EmptyView()
-            }
-            
-        case .failed:
-            EmptyView()
-        }
-    }
-    
-    @ViewBuilder
-    func carouselSection(title: String, state: Loadable<[Movie]>) -> some View {
+    func carouselSection(feed: MoviesFeed, state: Loadable<[Movie]>) -> some View {
         switch state {
         case .idle, .loading:
-            MovieCarousel.skeleton(title: title)
+            MovieCarousel.skeleton(title: feed.title)
             
         case .loaded(let movies):
             if !movies.isEmpty {
-                MovieCarousel(title: title, movies: movies, onSeeAll: {})
+                MovieCarousel(title: feed.title, movies: movies, feed: feed)
             } else {
                 EmptyView()
             }

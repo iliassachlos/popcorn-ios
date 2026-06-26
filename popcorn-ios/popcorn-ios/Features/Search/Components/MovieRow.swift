@@ -8,13 +8,16 @@ struct MovieRow: View {
             HStack(spacing: Spacing.md) {
                 poster
                 info
+                
                 Spacer()
+                
+                Image(systemName: "chevron.right")
+                    .font(Font.footnote)
+                    .fontWeight(.semibold)
+                    .foregroundStyle(.tertiary)
             }
             .padding(.horizontal, Spacing.md)
             .padding(.vertical,Spacing.sm)
-          
-            Divider()
-                .padding(.leading,Spacing.md)
         }
     }
 }
