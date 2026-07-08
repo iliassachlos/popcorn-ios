@@ -27,7 +27,7 @@ struct MovieService {
                 path: "/movie/\(id)",
                 queryItems: [URLQueryItem(
                     name: "append_to_response",
-                    value: "videos"
+                    value: "videos,credits"
                 )]
             )
         )

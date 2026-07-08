@@ -33,6 +33,8 @@ struct MovieDetailView: View {
                     movieInfo.unredacted()
                 }
                 .padding(Spacing.md)
+                
+                castSection.unredacted()
             }
         }
         .ignoresSafeArea(edges: .top)
@@ -151,6 +153,37 @@ private extension MovieDetailView {
         
     }
     
+    @ViewBuilder
+    var castSection: some View {
+        let detailedMovie = viewModel.movie.value
+        
+        // Hide the section entirely once loaded if the movie has no cast
+        if detailedMovie == nil || detailedMovie?.credits.cast.isEmpty == false {
+            VStack(alignment: .leading, spacing: Spacing.sm) {
+                Text("Cast")
+                    .font(Font.headline)
+                    .padding(.horizontal, Spacing.md)
+                
+                ScrollView(.horizontal, showsIndicators: false) {
+                    LazyHStack(alignment: .top, spacing: Spacing.md) {
+                        if let detailedMovie {
+                            ForEach(detailedMovie.credits.cast.prefix(10)) { member in
+                                CastCard(member: member)
+                            }
+                        } else {
+                            ForEach(0..<6, id: \.self) { _ in
+                                CastCard.skeleton
+                            }
+                        }
+                    }
+                    .padding(.leading, Spacing.md)
+                }
+                .disabled(detailedMovie == nil)
+            }
+            .padding(.bottom, Spacing.lg)
+        }
+    }
+    
     @ToolbarContentBuilder
     var toolbar: some ToolbarContent {
         ToolbarItem(placement: .topBarTrailing) {
@@ -162,7 +195,11 @@ private extension MovieDetailView {
                 }
                 
                 Button {
-                    viewModel.toggleSave(existing: savedMovies.first, context: modelContext)
+                    viewModel
+                        .toggleSave(
+                            existing: savedMovies.first,
+                            context: modelContext
+                        )
                 } label: {
                     Image(systemName: isSaved ? "bookmark.fill" : "bookmark")
                 }

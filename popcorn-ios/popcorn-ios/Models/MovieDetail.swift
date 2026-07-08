@@ -12,9 +12,14 @@ struct MovieDetail: Decodable, Identifiable {
     let runtime: Int?
     let genres: [Genre]
     let videos: VideoResponse?
+    let credits: CreditsResponse
 
     struct VideoResponse: Decodable {
         let results: [Video]
+    }
+
+    struct CreditsResponse: Decodable {
+        let cast: [CastMember]
     }
 
     var formattedRuntime: String {
